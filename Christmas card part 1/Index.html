@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprite Animation</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-image: url('sprites/Garden.PNG'); /* Background Image */
+            background-size: cover; /* Fit and preserve aspect ratio */
+            background-position: center;
+            background-repeat: no-repeat; 
+            height: 100vh; /* Ensure body height is 100% of viewport height */
+        }
+
+        .dust {
+            width: 300px; /* Adjust as needed */
+            height: 300px; /* Adjust as needed */
+            background-image: url('sprites/dust.png'); /* Dust sprite */
+            background-size: 1200px 300px; /* Adjust based on dust sprite size (4 frames) */
+            position: absolute;
+            top: 45%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%);
+            z-index: 10; /* Ensure it appears above the dog */
+            animation: dustAnimation 0.5s steps(4) infinite; /* 4 frames */
+        }
+
+        @keyframes dustAnimation {
+            0% { background-position: 0 0; }
+            100% { background-position: -1200px 0; } /* Adjust based on the total width of the 4 frames */
+        }
+
+        .dog {
+            width: 200px; /* Adjust based on the size of dog_back.png */
+            height: 200px; /* Adjust based on the size of dog_back.png */
+            background-image: url('sprites/dog_back.png'); /* Initial sprite */
+            background-size: 432px 216px; /* Adjust based on the actual dog_back sprite size */
+            position: absolute;
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            animation: dogAnimation 0.5s steps(2) infinite;
+            z-index: 15;
+        }
+
+        @keyframes dogAnimation {
+            0% { background-position: 0 0; }
+            100% { background-position: -432px 0; } /* Adjust for dust effect if needed */
+        }
+
+        .overlay {
+            position: fixed;             /* Cover full screen */
+            top: 0;
+            left: 0;
+            width: 100vw;               /* Full viewport width */
+            height: 100vh;              /* Full viewport height */
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+            display: none;              /* Initially hidden */
+            z-index: 16;                 /* Ensure it's above the background but behind flower and caption */
+        }
+
+        .flower {
+            width: 100px; /* Adjust size as needed */
+            height: 100px; /* Adjust size as needed */
+            background-image: url('sprites/flower.png'); /* Flower appearance */
+            background-size: contain; /* Adjust if needed */
+            position: absolute;
+            top: 50%; /* Center vertically */
+            left: 40%; /* Center horizontally */
+            transform: translate(-50%, -50%);
+            z-index: 20; /* Ensure it appears above the dog */
+            display: none; /* Initially hidden */
+            cursor: pointer;
+            z-index: 18;
+        }
+
+        .gift-caption {
+            position: absolute;
+            left: 50%; /* Center horizontally */
+            top: 70%; /* Adjust to lower the position */
+            transform: translate(-60%, 10%); /* Center the caption */
+            display: none; /* Initially hidden */
+            font-size: 30px; /* Adjust size as needed */
+            color: rgb(255, 255, 255); /* Adjust color as needed */
+            text-align: center; 
+            font-family: 'Press Start 2P', cursive; 
+            z-index: 19; /* Ensure it appears above the dog */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="dog" onclick="handleClick()"></div>
+    <div class="dust"></div>
+    <div class="flower" onclick="moveFlower()"></div>
+    <div class="gift-caption">Doggy got you a gift!!</div>
+    <div class="overlay"></div>
+
+    <script>
+        function handleClick() {
+            const dog = document.querySelector('.dog');
+            const dust = document.querySelector('.dust');
+            const flower = document.querySelector('.flower');
+
+            // Change dog sprite to front view
+            dog.style.backgroundImage = "url('sprites/dog_front.png')";
+            dog.style.backgroundSize = "432px 200px"; // Adjust as per dog_front sprite dimensions
+            
+            // Remove dust sprite immediately
+            dust.style.display = "none";
+
+            // Show flower after 2 seconds
+            setTimeout(() => {
+                flower.style.display = "block"; // Show flower
+            }, 100);
+
+        }
+        function moveFlower() {
+            
+            const flower = document.querySelector('.flower');
+            const caption = document.querySelector('.gift-caption');
+            const overlay = document.querySelector('.overlay');
+
+            overlay.style.display = "block";
+
+            flower.style.transform = "translate(0px, -70px) scale(4)"; 
+            
+
+            caption.style.display = "block"; 
+            caption.style.left = "60%"; 
+        }
+    </script>
+</body>
+</html>
